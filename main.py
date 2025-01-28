@@ -5,7 +5,6 @@ import requests
 import streamlit as st
 from langchain.llms import Together
 import os
-
 # Load environment variables from the .env file
 load_dotenv()
 
