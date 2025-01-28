@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import os
 import time
 import streamlit as st
-
 # Load environment variables
 load_dotenv()
 
