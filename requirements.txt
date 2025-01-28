@@ -1,6 +1,7 @@
-python-dotenv==1.0.0
-langchain==0.1.0
-langchain-google-genai==0.0.6
-streamlit==1.30.0
-requests==2.31.0
-together==0.2.7 
+langchain
+langchain-openai
+langchain-google-genai
+streamlit>=1.32.0
+load_dotenv
+langchain_community
+langchain_together
