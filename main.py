@@ -44,7 +44,7 @@ days = st.number_input("Number of days to learn", min_value=1, max_value=30, val
 hours_per_day = st.number_input("Hours per day", min_value=1, max_value=12, value=4, step=1)
 
 # Dropdown for selecting language
-language = st.selectbox("Select language for study plan", ["English", "Spanish", "French", "German", "Hindi", "Gujarati"], index=0)
+language = st.selectbox("Select language for study plan", ["English", "Spanish", "French", "German", "Hindi", "Gujarati","chinese"], index=0)
 
 # Dropdown for selecting AI model
 selected_ai = st.selectbox("Select the AI model", list(ai_models.keys()))
