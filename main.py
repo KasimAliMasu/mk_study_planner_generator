@@ -1,7 +1,8 @@
+
 from langchain_google_genai import GoogleGenerativeAI
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from langchain.llms import Together
+from langchain_together import Together
 from dotenv import load_dotenv
 import os
 import time
@@ -36,7 +37,6 @@ You are a **senior {{category}} professional**, renowned for your expertise and 
 2️⃣ **Category**: {{category}}  
 3️⃣ **Total Days Available**: {{days_available}}  
 4️⃣ **Daily Time Commitment**: {{daily_time}} hours  
-5️⃣ **Language**: {{language}}
 
 📝 **Plan Requirements**:  
 ✅ Each day MUST include a **clear, actionable objective** with subtopics to master. No days should be skipped or merged into intervals.  
@@ -55,10 +55,10 @@ You are a **senior {{category}} professional**, renowned for your expertise and 
 📌 **Now, create a step-by-step plan** to help achieve mastery in **{{skill}}** within **{{days_available}}** days, dedicating **{{daily_time}}** hours daily. Ensure each day has unique tasks and maintains momentum toward the goal.
 """
 
-# Initialize PromptTemplate with category and language
+# Initialize PromptTemplate with category
 plan_prompt = PromptTemplate(
     template=plan_template,
-    input_variables=["skill", "category", "days_available", "daily_time", "milestone_interval", "language"]
+    input_variables=["skill", "category", "days_available", "daily_time", "milestone_interval"]
 )
 
 # Initialize models
@@ -76,7 +76,7 @@ plan_chains = {
 }
 
 # Streamlit UI
-st.title("Study Plan Generator")
+st.title("Personal Plan Generator")
 st.subheader("Generate a step-by-step plan to master a skill using Generative AI")
 
 # Model selection
@@ -96,17 +96,16 @@ selected_category = st.selectbox(
 # Input fields
 skill = st.text_input("Enter the skill you want to master", placeholder="E.g., Python programming", help="Specify the skill you want to master, such as programming, painting, or fitness.")
 days_available = st.number_input(
-    "Number of days available", min_value=1, max_value=365, value=10, step=1,
+    "Number of days available", min_value=1, max_value=365, value=30, step=1,
     help="Enter the total number of days you can dedicate to mastering the skill."
 )
 daily_time = st.number_input(
     "Daily time commitment (hours)", min_value=1, max_value=24, value=2, step=1,
     help="Specify how many hours you can commit to learning daily."
 )
- 
-language = st.selectbox(
-    "Select language",
-    ["English", "Gujarati", "Spanish", "French", "German", "Hindi", "Chinese", "Japanese", "Korean"], index=0
+milestone_interval = st.number_input(
+    "Milestone interval (days)", min_value=1, max_value=30, value=5, step=1,
+    help="Set the interval for tracking progress, such as every 5 or 10 days."
 )
 
 # Generate plan button
@@ -120,8 +119,7 @@ if st.button("Generate Plan"):
                 "category": selected_category,
                 "days_available": days_available,
                 "daily_time": daily_time,
-              
-                "language": language,
+                "milestone_interval": milestone_interval,
             })
             plan = raw_plan.strip()
 
