@@ -26,7 +26,6 @@ study_plan_template = """
 ⏳ **Daily Study Time:** {hours_per_day} hours  
 🌍 **Language Preference:** {language}  
 
- 
 """
 
 study_plan_prompt = PromptTemplate(
@@ -38,26 +37,31 @@ study_plan_prompt = PromptTemplate(
 st.header("✨ Study Plan Generator - Masu KasimAli ✨")
 st.subheader("📚 Generate a personalized study plan with the power of AI! 🌟")
 
-# Input for topic, number of days, and hours per day
-topic = st.text_input("🔍 What would you like to study?")
-days = st.number_input("⏳ Number of days to learn", min_value=1, max_value=30, value=7, step=1)
-hours_per_day = st.number_input("⏰ Hours per day", min_value=1, max_value=12, value=4, step=1)
-
 # Dropdown for selecting language
 language = st.selectbox("🌍 Choose language for your study plan", ["English", "Spanish", "French", "German", "Hindi", "Gujarati", "Chinese"], index=0)
 
 # Dropdown for selecting AI model
 selected_ai = st.selectbox("🤖 Choose an AI model", ["Gemini (Google)", "Meta-Llama 3.1"])
 
+# Input for topic, number of days, and hours per day
+topic = st.text_input("🔍 What would you like to study?")
+days = st.number_input("⏳ Number of days to learn", min_value=1, max_value=30, value=7, step=1)
+hours_per_day = st.number_input("⏰ Hours per day", min_value=1, max_value=12, value=4, step=1)
+
+# Input for selecting temperature value (this controls creativity/randomness)
+temperature = st.slider("🌡️ Select Temperature (Randomness)", min_value=0.0, max_value=1.0, value=0.7, step=0.05)
+
 # Initialize Google's Gemini model
 gemini_model = ChatGoogleGenerativeAI(
     model="gemini-1.5-flash-latest",
-    system_instruction="Only return a structured study plan. Do NOT add disclaimers, personal remarks, or unnecessary commentary."
+    system_instruction="Only return a structured study plan. Do NOT add disclaimers, personal remarks, or unnecessary commentary.",
+    temperature=temperature  # Add temperature here
 )
 
 # Initialize Together AI model (updated model name)
 together_model = Together(
     model="meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+    temperature=temperature  # Add temperature here
 )
 
 # AI model options
@@ -96,8 +100,8 @@ if st.button("🚀 Generate Your Study Plan"):
         # This is where the emoji rendering should be handled
         st.markdown(filtered_plan if isinstance(filtered_plan, str) else filtered_plan.content)
 
-          # Encourage users to start their learning journey
+        # Encourage users to start their learning journey
         st.info("💡 Tip: Take breaks regularly! Your brain loves a bit of rest. 🌱")
 
     except Exception as e:
-         st.error("❌ Error generating study plan: {str(e)}")
+        st.error("❌ Error generating study plan: {str(e)}")
