@@ -78,7 +78,7 @@ if st.button("🚀 Generate Your Study Plan"):
         
         # Use the selected model to create an LLM chain
         study_plan_chain = study_plan_prompt | chosen_model
-        
+    
         # Generate the study plan
         study_plan = study_plan_chain.invoke({
             "topic": topic,
